@@ -8,6 +8,38 @@ export const metadata: Metadata = {
 };
 
 export default function Contact() {
+  async function formPost(formData: FormData) {
+    "use server";
+
+    const rawFormData = {
+      name: formData.get("your-name"),
+      email: formData.get("your-email"),
+      subject: formData.get("your-subject"),
+      message: formData.get("your-message"),
+    };
+
+    const telegramUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
+
+    const text = `
+New message from ${rawFormData.name}
+Email: ${rawFormData.email}
+Subject: ${rawFormData.subject}
+Message: ${rawFormData.message}
+          `;
+    const response = await fetch(telegramUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: process.env.TELEGRAM_TO,
+        text: text,
+      }),
+    });
+    const result = await response.json();
+    return result?.ok;
+  }
+
   return (
     <article className="has-post-thumbnail hentry">
       <div className="post-thumbnail">
@@ -34,13 +66,13 @@ export default function Contact() {
         </span>
         <hr />
         <div>
-          <form method="post" name="contact">
+          <form action={formPost}>
             <p>
               <label>
                 {" "}
                 Tên bạn
                 <br />
-                <span className="wpcf7-form-control-wrap" data-name="your-name">
+                <span data-name="your-name">
                   <input
                     size={40}
                     maxLength={400}
@@ -92,7 +124,7 @@ export default function Contact() {
                 </span>
               </label>
             </p>
-            <input type="submit" value="Gửi ngay" />
+            <button type="submit">Gửi ngay</button>
           </form>
         </div>
       </div>
