@@ -1,5 +1,4 @@
 import Image from "next/image";
-import styles from "../page.module.css";
 import { Metadata } from "next";
 import Link from "next/link";
 import IonIcon from "@reacticons/ionicons";
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <div>
       <article className="hentry">
         <div className="entry-content">
           <h1>Về tôi</h1>
@@ -49,7 +48,7 @@ export default function Home() {
               >
                 ASP.NET
               </Link>
-              , Java
+              , Java, NodeJS
             </p>
             <p>
               Tôi có các kỹ năng cần thiết để làm việc hiệu quả và có thể giúp
@@ -65,7 +64,7 @@ export default function Home() {
               <li>
                 <p dir="auto">
                   Frontend Proficiency: Deep knowledge of frontend technologies
-                  like HTML, CSS, JavaScript, and frameworks such as React and
+                  like HTML, CSS, JavaScript, and frameworks such as React, NextJS and
                   Vue.js.
                 </p>
               </li>
@@ -74,7 +73,7 @@ export default function Home() {
                   Backend Development: Experience in backend technologies like
                   Node.js, C#, ADO.NET NET Core, MVC, LINQ, Entity Framework,
                   Dapper, WebServices, RESTful API, IdentityServer4, RabbitMQ,
-                  Redis, NodeJS, NestJS. Knowledge of some well-known Unit Test
+                  Redis, NextJS, NestJS. Knowledge of some well-known Unit Test
                   with xUnit, NSubtitue. (The art of unit testing)
                 </p>
               </li>

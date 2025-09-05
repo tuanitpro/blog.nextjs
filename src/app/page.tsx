@@ -15,7 +15,7 @@ export default async function Home() {
           </div>
         </article>
       </header>
-      <article>
+      <article className="hentry">
         <div className="entry-content">
           <ul>
             {posts.map(
