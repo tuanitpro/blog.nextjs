@@ -18,7 +18,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-
+      - name: Create .env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_NODE_ENV: production
+          envkey_REACT_APP_TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+          envkey_REACT_APP_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       - name: npm install, build, and test
         run: |
           npm install
@@ -54,3 +59,53 @@ jobs:
           port: ${{ secrets.PORT }}
           source: .
           target: /www/wwwroot/nextjs.tuanitpro.com
+
+  docker:
+    name: docker
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+    steps:
+      - name: Create .env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_NODE_ENV: production
+          envkey_REACT_APP_TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+          envkey_REACT_APP_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+            
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: tuanitpro/blog.nextjs:latest
+
+  notification:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment:
+      name: 'Production'
+      url: 'https://tuanitpro.com'
+    steps:
+      - name: Send Telegram Message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The GitHub ${{ github.actor }} has been deployed successfully.
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://tuanitpro.com
