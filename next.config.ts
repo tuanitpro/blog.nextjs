@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [new URL("https://blog.tuanitpro.com/**")],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default nextConfig;
