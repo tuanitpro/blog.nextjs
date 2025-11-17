@@ -28,7 +28,7 @@ const Navigation = ({ toggleVisibility }: Props) => {
     },
     {
       name: "MY CV",
-      link: "https://cv.tuanitpro.com",
+      link: "https://www.linkedin.com/in/tuanitpro/",
       external: true,
     },
   ];
